@@ -1,16 +1,12 @@
-# Instalando e carregando o pacote tidyverse
-library(tidyverse)
-
 #' Função para projeção logística
 #'
-#' Gera prpjção de população total logística
-#' @param F_temp The temperature in degrees Fahrenheit
-#' @return The temperature in degrees Celsius
+#' Gera projeção de população total logística
+#' @param census1 The temperature in degrees Fahrenheit
+#' @return População projetada n anos
 #' @examples
-#' temp1 <- F_to_C(50);
-#' temp2 <- F_to_C( c(50, 63, 23) );
+#' data(brasil2000)
 #' @export
-#
+
 forecast_logistico <- function(census1, census2, anos, assint) {
   anos_base <- c(anos[1], anos[2])
   pop_assint <- c(min(census1, census2) * assint[1], max(census1, census2) * assint[2])

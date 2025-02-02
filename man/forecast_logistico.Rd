@@ -7,15 +7,14 @@
 forecast_logistico(census1, census2, anos, assint)
 }
 \arguments{
-\item{F_temp}{The temperature in degrees Fahrenheit}
+\item{census1}{The temperature in degrees Fahrenheit}
 }
 \value{
-The temperature in degrees Celsius
+População projetada n anos
 }
 \description{
-Gera prpjção de população total logística
+Gera projeção de população total logística
 }
 \examples{
-temp1 <- F_to_C(50);
-temp2 <- F_to_C( c(50, 63, 23) );
+data(brasil2000)
 }
