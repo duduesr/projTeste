@@ -15,7 +15,8 @@ calc_projection <- function(
   anos,#anos dos censos
   assin       #assintotas
 ){
-
+  
+  census_date = anos
   census_year = floor(anos) #arredonda ano
 
   #cria DAM
