@@ -19,7 +19,7 @@ calc_projection <- function(
   census_year = floor(anos) #arredonda ano
 
   #cria DAM
-  dados <- censos %>%
+  dados <- census %>%
     group_by(DAM) %>%
     mutate(DAM_census1 = sum(DAMe_census1),
            DAM_census2 = sum(DAMe_census2),
