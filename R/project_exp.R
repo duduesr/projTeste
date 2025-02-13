@@ -1,9 +1,11 @@
+
+###############################################################################
 #' Função para projeção exponencial usando a fórmula fornecida e anos flexíveis
 #'
-#' Gera rojeção exponencial usando a fórmula fornecida e anos flexíveis
+#' @description Gera rojeção exponencial usando a fórmula fornecida e anos flexíveis
 #' @param census1 população do primeiro censo
 #' @param census2 população do segundo censo
-#' @param anos vetor com os anos do primeiro e segundo censo e do no a ser projetado
+#' @param anos vetor com os anos do primeiro e segundo censo e do ano a ser projetado
 #' @return População projetada n anos
 #' @examples
 #' data(brasil2000)

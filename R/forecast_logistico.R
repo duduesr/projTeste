@@ -1,9 +1,11 @@
+
+###############################################################################
 #' Função para projeção logística
 #'
-#' Gera projeção de população total logística
+#' @description Gera projeção de população total logística
 #' @param census1 população do primeiro censo
 #' @param census2 população do segundo censo
-#' @param anos vetor com os anos do primeiro e segundo censo e do no a ser projetado
+#' @param anos vetor com os anos do primeiro e segundo censo e do ano a ser projetado
 #' @param assint limite inferior e superior das assintotas da curva logística
 #' @return População projetada n anos
 #' @examples
