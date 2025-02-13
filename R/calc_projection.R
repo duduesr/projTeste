@@ -13,7 +13,7 @@
 calc_projection <- function(
   census,     #base de dados do censo (3 pontos)
   anos,#anos dos censos
-  assin       #assintotas
+  assint       #assintotas
 ){
   
   census_date = anos
