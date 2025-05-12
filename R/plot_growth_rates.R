@@ -77,7 +77,7 @@ plot_growth_rates <- function(
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotación de etiquetas en el eje x
     labs(
       title = title.aux,  # Título del gráfico
-      x = DAM_name,  # Etiqueta del eje x
+      x = "DAM",  # Etiqueta del eje x
       y = "Tasa de Crecimiento Anual") +  # Etiqueta del eje y
     geom_hline(yintercept = 0, color = "red")  # Línea horizontal en y=0
 
@@ -105,7 +105,7 @@ plot_growth_rates <- function(
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotación de etiquetas en el eje x
     labs(
       title = title.aux,  # Título del gráfico
-      x = DAM_name,  # Etiqueta del eje x
+      x = "DAM",  # Etiqueta del eje x
       y = "Tasa de Crecimiento Anual") +  # Etiqueta del eje y
     geom_hline(yintercept = 0, color = "red")  # Línea horizontal en y=0
 
@@ -135,7 +135,7 @@ plot_growth_rates <- function(
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotar etiquetas del eje x para mejor legibilidad
     labs(
       title = title.aux,  # Título del gráfico
-      x = DAM_name,  # Etiqueta del eje x
+      x = "DAM",  # Etiqueta del eje x
       y = "Tasa de Crecimiento Anual") +  # Etiqueta del eje y
     geom_hline(yintercept = 0, color = "red")  # Añadir línea horizontal en y=0
 
