@@ -1,4 +1,3 @@
-
 ###############################################################################
 #' Plota
 #'
@@ -14,23 +13,30 @@ plot_growth_rates <- function(
   censos,
   census_date,
   pais_name = NULL,
-  save_plot = T,
+  DAM_name = NULL,
+  DAMe_name = NULL,
+  save_plotly = T,
+  save_image = T,
   path = getwd()
 ){
 
   #cria path
   if (!dir.exists(path)) dir.create(path)
 
+  #DAM e DAMe nome
+  if (is.null(DAM_name)) DAM_name = 'DAM'
+  if (is.null(DAMe_name)) DAMe_name = 'DAMe'
+
   census_year <- floor(census_date)  # Años de los censos
   # Agrupa y suma datos por departamento
   datos <- censos %>%
     group_by(DAM) %>%  # Agrupa por departamento
-    mutate(DAM_census1 = sum(DAMe_census1),  # Suma población de 2002 por departamento
-           DAM_census2 = sum(DAMe_census2),  # Suma población de 2012 por departamento
-           DAM_census3 = sum(DAMe_census3),  # Suma población de 2022 por departamento
+    mutate(DAM_census1 = sum(DAMe_census1),  # Suma población de census1 por departamento
+           DAM_census2 = sum(DAMe_census2),  # Suma población de census2 por departamento
+           DAM_census3 = sum(DAMe_census3),  # Suma población de census3 por departamento
            DAM = factor(DAM, levels = unique(censos$DAM)))  # Convierte DAM a factor con niveles únicos
 
-  # Filtra distritos con datos de población en 2002
+  # Filtra distritos con datos de población en census1
   datos <- datos %>% filter(DAMe_census1 > 0)
 
   # Calcula tasas de crecimiento y proyecciones
@@ -57,7 +63,8 @@ plot_growth_rates <- function(
         crecim2 >= 0 & crecim2 <= 0.006 ~ "0-0.6%",
         crecim2 > 0.006 & crecim2 <= 0.014 ~ "0.6%-1.4%",
         crecim2 > 0.014 ~ ">1.4%"
-      )) %>%
+      )
+      ) %>%
     ungroup() %>%  # Desagrupa los datos
     mutate(tend = ifelse(DAMe_census1 > DAMe_census2, "decrecim", "crecim"))  # Tendencia de crecimiento
 
@@ -77,19 +84,20 @@ plot_growth_rates <- function(
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotación de etiquetas en el eje x
     labs(
       title = title.aux,  # Título del gráfico
-      x = "DAM",  # Etiqueta del eje x
+      x = DAM_name,  # Etiqueta del eje x
       y = "Tasa de Crecimiento Anual") +  # Etiqueta del eje y
     geom_hline(yintercept = 0, color = "red")  # Línea horizontal en y=0
 
 
   print(boxplot_census1_census2)
-  if (save_plot) ggsave(plot = boxplot_census1_census2,
-         file = paste0(path,'/01_boxplot_census1_census2.svg'),  # Guarda el gráfico en formato SVG
+
+  if (save_image) ggsave(plot = boxplot_census1_census2,
+         file = paste0(path,'/01_boxplot_census1_census2.png'),  # Guarda el gráfico en formato SVG
          dpi = 300,  # Resolución del gráfico
          height = 8,  # Altura del gráfico
          width = 12)  # Ancho del gráfico
 
-
+  if (save_plotly)htmlwidgets::saveWidget(plotly::ggplotly(boxplot_census1_census2), paste0(path,'/01_boxplot_census1_census2.html'))
   #titulo
   title.aux = ifelse(
     is.null(pais_name),
@@ -105,18 +113,19 @@ plot_growth_rates <- function(
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotación de etiquetas en el eje x
     labs(
       title = title.aux,  # Título del gráfico
-      x = "DAM",  # Etiqueta del eje x
+      x = DAM_name,  # Etiqueta del eje x
       y = "Tasa de Crecimiento Anual") +  # Etiqueta del eje y
     geom_hline(yintercept = 0, color = "red")  # Línea horizontal en y=0
 
   print(boxplot_census2_census3)
   # Guardar el gráfico en formato SVG
-  if (save_plot) ggsave(plot = boxplot_census2_census3,
-         file = paste0(path,'/02_boxplot_census2_census3.svg'),  # Nombre del archivo
+  if (save_image) ggsave(plot = boxplot_census2_census3,
+         file = paste0(path,'/02_boxplot_census2_census3.png'),  # Nombre del archivo
          dpi = 300,  # Resolución del gráfico
          height = 8,  # Altura del gráfico
          width = 12)  # Ancho del gráfico
 
+  if (save_plotly)htmlwidgets::saveWidget(plotly::ggplotly(boxplot_census2_census3), paste0(path,'/02_boxplot_census2_census3.html'))
 
 
   # Crear gráfico de boxplot para el crecimiento poblacional entre census 1 y census 3
@@ -135,17 +144,19 @@ plot_growth_rates <- function(
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotar etiquetas del eje x para mejor legibilidad
     labs(
       title = title.aux,  # Título del gráfico
-      x = "DAM",  # Etiqueta del eje x
+      x = DAM_name,  # Etiqueta del eje x
       y = "Tasa de Crecimiento Anual") +  # Etiqueta del eje y
     geom_hline(yintercept = 0, color = "red")  # Añadir línea horizontal en y=0
 
   print(boxplot_census1_census3)
   # Guardar el gráfico en formato SVG
-  if (save_plot) ggsave(plot = boxplot_census1_census3,
-                        file = paste0(path,'/03_boxplot_census1_census3.svg'),  # Nombre del archivo
+  if (save_image) ggsave(plot = boxplot_census1_census3,
+                        file = paste0(path,'/03_boxplot_census1_census3.png'),  # Nombre del archivo
                         dpi = 300,  # Resolución del gráfico
                         height = 8,  # Altura del gráfico
                         width = 12)  # Ancho del gráfico
+
+  if (save_plotly)htmlwidgets::saveWidget(plotly::ggplotly(boxplot_census1_census3), paste0(path,'/03_boxplot_census1_census3.html'))
 
   # Crear gráfico de dispersión para comparar tasas de crecimiento poblacional
   title.aux = ifelse(
@@ -158,8 +169,9 @@ plot_growth_rates <- function(
            census_year[2], "-", census_year[3], " - ", pais_name)
   )
 
-  crec_censos <- ggplot(datos) +
-    geom_point(aes(x = crecim, y = crecim2), color = "blue", size = 3) +  # Puntos azules para cada distrito
+  crec_censos <- ggplot(datos,
+                        aes(x = crecim, y = crecim2, text = paste0(DAM," | ", DAMe))) +
+    geom_point(color = "blue", size = 3) +  # Puntos azules para cada distrito
     theme_minimal() +  # Aplicar tema minimalista al gráfico
     labs(
       title = title.aux,  # Título del gráfico
@@ -173,15 +185,17 @@ plot_growth_rates <- function(
 
   # Guardar el gráfico en formato SVG
   print(crec_censos)
-  if (save_plot) ggsave(plot = crec_censos,
-         file = paste0(path,'/04_crec_censos.svg'),
+  if (save_image) ggsave(plot = crec_censos,
+         file = paste0(path,'/04_crec_censos.png'),
          dpi = 300,  # Resolución del gráfico
          height = 8,  # Altura del gráfico
          width = 12)  # Ancho del gráfico
 
+  if (save_plotly)htmlwidgets::saveWidget(plotly::ggplotly(crec_censos, tooltip = c('x', 'y', 'text')), paste0(path,'/04_crec_censos.html'))
+
   # Crear gráfico de dispersión para comparar tasas de crecimiento poblacional por departamento
-  crec_censos_dpto <- ggplot(datos) +
-    geom_point(aes(x = crecim, y = crecim2), color = "blue", size = 3) +  # Puntos azules para cada distrito
+  crec_censos_dpto <- ggplot(datos, aes(x = crecim, y = crecim2, text = DAMe)) +
+    geom_point(color = "blue", size = 3) +  # Puntos azules para cada distrito
     facet_wrap(~DAM, ncol = 5, scales = "fixed") +  # Crear facetas por departamento
     labs(
       title = title.aux,  # Título del gráfico
@@ -196,12 +210,13 @@ plot_growth_rates <- function(
 
   print(crec_censos_dpto)
   # Guardar el gráfico en formato SVG
-  if (save_plot) ggsave(plot = crec_censos_dpto,
-         file = paste0(path,'/05_crec_censos_dpto.svg'),
+  if (save_image) ggsave(plot = crec_censos_dpto,
+         file = paste0(path,'/05_crec_censos_dpto.png'),
          dpi = 300,  # Resolución del gráfico
          height = 8,  # Altura del gráfico
          width = 12)  # Ancho del gráfico
 
+  if (save_plotly)htmlwidgets::saveWidget(plotly::ggplotly(crec_censos_dpto), paste0(path,'/05_crec_censos_dpto.html'))
 
 }
 
