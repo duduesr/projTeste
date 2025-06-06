@@ -8,7 +8,10 @@ plot_growth_rates(
   censos,
   census_date,
   pais_name = NULL,
-  save_plot = T,
+  DAM_name = NULL,
+  DAMe_name = NULL,
+  save_plotly = T,
+  save_image = T,
   path = getwd()
 )
 }
